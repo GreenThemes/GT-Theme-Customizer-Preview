@@ -8,7 +8,7 @@ Author: Jason Green
 Author URI: http://green.cx/
 */
 /*  Copyright 2012 Jason Green (http://green.cx)
-  Donncha O Caoimh (http://ocaoimh.ie/) http://ocaoimh.ie/wordpress-mu-sitewide-tags/
+	Donncha O Caoimh (http://ocaoimh.ie/) http://ocaoimh.ie/wordpress-mu-sitewide-tags/
     With contributions by Ron Rennick(http://wpmututorials.com/), Thomas Schneider(http://www.im-web-gefunden.de/) and others.
 
     This program is free software; you can redistribute it and/or modify
