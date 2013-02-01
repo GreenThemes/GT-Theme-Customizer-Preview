@@ -8,17 +8,20 @@
  */
 
 define( 'IFRAME_REQUEST', true );
-
+//TODO: Fix the static path here
 require_once( '/var/www/citycx/public/wp-admin/admin.php' );
 
+//TODO: Move this to plugin activation or an interface to create a specific username	
 $gt_user= new WP_User( null, 'test' );
 $gt_user->add_cap('edit_theme_options');
 
+
 if ( ! current_user_can( 'edit_theme_options' ) )
 	wp_die( __( 'Cheatin&#8217; uh?' ) );
-
-//$user->remove_cap( 'edit_theme_options');
 	
+// This removes the edit_theme_options permission
+//$user->remove_cap( 'edit_theme_options');  
+
 wp_reset_vars( array( 'url', 'return' ) );
 $url = urldecode( $url );
 $url = wp_validate_redirect( $url, home_url( '/' ) );
@@ -47,7 +50,7 @@ do_action( 'customize_controls_enqueue_scripts' );
 // Let's roll.
 @header('Content-Type: ' . get_option('html_type') . '; charset=' . get_option('blog_charset'));
 
-wp_user_settings();
+//wp_user_settings();
 
 _wp_admin_html_begin();
 
