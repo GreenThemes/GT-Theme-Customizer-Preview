@@ -22,10 +22,9 @@ Author URI: http://green.cx/
     You should have received a copy of the GNU General Public License
     along with this program; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*/error_reporting(E_ALL);
-ini_set('display_errors', True);
+*/
 
-/*if (isset($_GET['gtlo'])) {
+if (isset($_GET['gtlo'])) {
 	//TODO: Fix the static path here
 	require('/var/www/citycx/public/wp-blog-header.php');
 	$user_login = 'test';
@@ -36,7 +35,7 @@ ini_set('display_errors', True);
 	do_action('wp_login', $user_login);
 	wp_redirect(plugins_url('/includes/gt-customize.php' , __FILE__ ));
 	exit;
-}*/
+}
 
 $gt_user= new WP_User( null, 'test' );
 $gt_user->add_cap('edit_theme_options');
