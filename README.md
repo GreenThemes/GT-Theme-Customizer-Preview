@@ -1,4 +1,4 @@
-GT-Guest-Customizer
+GT-Theme-Customizer-Preview
 ===================
 
 The idea is for Guests to be able to "Try Out" customizing your wordpress theme's options without registering an account.
@@ -17,10 +17,11 @@ After the guests click that link, they are logged in as the "test" user with acc
 A Menu Item is added to the admin bar so they can use the customizer.
 
 TO DO:
-There's two places where a static path to wordpress files is set
-Add a theme selector to the customizer.
-Make some options for changing the default test account's username, 
-and a list of available themes to choose from.
+1. There's two places where a static path to wordpress files is set
+2. Add a theme selector to the customizer.
+3. Make some options for changing the default test account's username, and a list of available themes to choose from.
+4. Stop the Test user from modifying their own account. OR just allow anon access if that's possible.
+
 
 Double and Triple, check the security.
 
