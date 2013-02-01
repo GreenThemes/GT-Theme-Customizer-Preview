@@ -3,13 +3,11 @@
 Plugin Name: GT Theme Customizer Preview for Guests
 Plugin URI: http://green.cx
 Description: Allows guests to preview theme options
-Version: 1
+Version: 1.01
 Author: Jason Green
 Author URI: http://green.cx/
-*/
-/*  Copyright 2012 Jason Green (http://green.cx)
-	Donncha O Caoimh (http://ocaoimh.ie/) http://ocaoimh.ie/wordpress-mu-sitewide-tags/
-    With contributions by Ron Rennick(http://wpmututorials.com/), Thomas Schneider(http://www.im-web-gefunden.de/) and others.
+
+    Copyright 2013 Jason Green (http://green.cx)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -24,7 +22,21 @@ Author URI: http://green.cx/
     You should have received a copy of the GNU General Public License
     along with this program; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*/
+*/error_reporting(E_ALL);
+ini_set('display_errors', True);
+
+/*if (isset($_GET['gtlo'])) {
+	//TODO: Fix the static path here
+	require('/var/www/citycx/public/wp-blog-header.php');
+	$user_login = 'test';
+	$user = get_userdatabylogin($user_login);
+	$user_id = $user->ID;
+	wp_set_current_user(user_id, $user_login);
+	wp_set_auth_cookie($user_id);
+	do_action('wp_login', $user_login);
+	wp_redirect(plugins_url('/includes/gt-customize.php' , __FILE__ ));
+	exit;
+}*/
 
 $gt_user= new WP_User( null, 'test' );
 $gt_user->add_cap('edit_theme_options');
@@ -35,6 +47,8 @@ $gt_user->add_cap('edit_theme_options');
  *
  * @since 3.4.0
  */
+ 
+ 
 function _gt_wp_customize_include() {
 	if ( ! ( ( isset( $_REQUEST['gt_customize'] ) && 'on' == $_REQUEST['wp_customize'] )
 		|| ( 'gt-customize.php' == basename( $_SERVER['PHP_SELF'] ) )
@@ -89,8 +103,43 @@ function _gt_wp_customize_loader_settings() {
  * 	The theme's stylesheet will be urlencoded if necessary.
  */
 function gt_wp_customize_url( $stylesheet = null ) {
-	$url = admin_url( 'gt-customize.php' );
+	$url = plugins_url('/includes/gt-customize.php' , __FILE__ );
 	if ( $stylesheet )
 		$url .= '?theme=' . urlencode( $stylesheet );
 	return esc_url( $url );
 }
+
+
+/**
+ *	Expose the Customizer Preview by adding a link in the admin bar.
+ */
+add_action ('admin_bar_menu', 'gt_customize_menu');
+function gt_customize_menu($admin_bar) {
+	
+	$admin_bar->add_menu( array (
+	'id' => 'customizer-preview',
+	'title' => 'Customizer Preview',
+	'href' => plugins_url('/includes/gt-customize.php' , __FILE__ ),
+	'meta' => array(
+		'title' => __('Greenth.me Customizer Preview'),
+		),
+	));
+}
+
+//IF the test user tries to view admin, take them back home
+function gt_restrict_admin_with_redirect() {
+	if (!current_user_can('manage_options') && $_SERVER['PHP_SELF'] != '/wp-admin/admin-ajax.php' && $_SERVER['PHP_SELF'] != '/wp-admin/admin.php' && $_SERVER['PHP_SELF'] != '/wp-content/plugins/gt-custom/includes/gt-customize.php' ) {
+			wp_redirect(site_url() ); exit;
+	}
+}
+add_action('admin_init', 'gt_restrict_admin_with_redirect');
+
+
+
+//Create Shortcode to drop the login and redirect link
+// Usage: [GTCustomizer]Preview Theme[/GTCustomizer]
+function gt_autologin_link($atts, $content = null) {
+	extract(shortcode_atts(array('link' => plugins_url('/gt-custom.php?gtlo' , __FILE__ )), $atts));
+	return '<a class="button" href="'.$link.'"><span>' . do_shortcode($content) . '</span></a>';
+}
+add_shortcode('GTCustomizer' , 'gt_autologin_link');
