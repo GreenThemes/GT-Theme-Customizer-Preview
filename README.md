@@ -23,3 +23,7 @@ Make some options for changing the default test account's username,
 and a list of available themes to choose from.
 
 Double and Triple, check the security.
+
+
+Note:
+I'm sure it won't work for you if you don't adjust the static links to the wp includes
