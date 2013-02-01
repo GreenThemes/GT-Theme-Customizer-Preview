@@ -3,17 +3,23 @@ GT-Guest-Customizer
 
 The idea is for Guests to be able to "Try Out" customizing your wordpress theme's options without registering an account.
 
-** This is NOT ready for production use. **
+** This is ALMOST ready for production use. **
 
-Requirements
-A test uesr account must be made with rights that enable editing theme options
-(http://ednailor.com/2012/04/16/allowing-non-admin-users-to-update-theme-options/)
+Usage:
+A test user is automatically created the first time you visit the customizer username="Test"
 
-Then to preview the Customizer the guest needs to login with this account and then browse to the customizer's url.
-(The custom customizer's url)
+A short code is available to automatically let guests login.
 
-Goals:
-No login, or at least saved guest user login.
-User has no rights no comment, blog, anything.
-User cannot actually save changes made to theme options.
+[GTCustomizer]Click here to Preview this theme's Customizer[/GTCustomizer]
 
+After the guests click that link, they are logged in as the "test" user with access to a read-only copy of the wordpress live customizer.
+
+A Menu Item is added to the admin bar so they can use the customizer.
+
+TO DO:
+There's two places where a static path to wordpress files is set
+Add a theme selector to the customizer.
+Make some options for changing the default test account's username, 
+and a list of available themes to choose from.
+
+Double and Triple, check the security.
