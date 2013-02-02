@@ -25,8 +25,7 @@ Author URI: http://green.cx/
 */
 
 if (isset($_GET['gtlo'])) {
-	//TODO: Fix the static path here
-	require('/var/www/citycx/public/wp-blog-header.php');
+	require(  dirname(__FILE__) . '/../../../wp-blog-header.php');
 	$user_login = 'test';
 	$user = get_userdatabylogin($user_login);
 	$user_id = $user->ID;
