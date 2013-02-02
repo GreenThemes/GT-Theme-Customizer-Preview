@@ -8,8 +8,8 @@
  */
 
 define( 'IFRAME_REQUEST', true );
-//TODO: Fix the static path here
-require_once( '/var/www/citycx/public/wp-admin/admin.php' );
+
+require_once( dirname(__FILE__) . '/../../../../wp-admin/admin.php' );
 
 //TODO: Move this to plugin activation or an interface to create a specific username	
 $gt_user= new WP_User( null, 'test' );
