@@ -126,7 +126,7 @@ function gt_customize_menu($admin_bar) {
 
 //IF the test user tries to view admin, take them back home
 function gt_restrict_admin_with_redirect() {
-	if (!current_user_can('manage_options') && $_SERVER['PHP_SELF'] != '/wp-admin/admin-ajax.php' && $_SERVER['PHP_SELF'] != '/wp-admin/admin.php' && $_SERVER['PHP_SELF'] != '/wp-content/plugins/gt-custom/includes/gt-customize.php' ) {
+	if (!current_user_can('manage_options') && ( is_ssl() ? 'https://' : 'http://' ) . $_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF'] != admin_url() . '/admin-ajax.php' && ( is_ssl() ? 'https://' : 'http://' ) . $_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF'] != admin_url() . '/admin.php' && ( is_ssl() ? 'https://' : 'http://' ) . $_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF'] != plugins_url() . '/gt-custom/includes/gt-customize.php' ) {
 			wp_redirect(site_url() ); exit;
 	}
 }
