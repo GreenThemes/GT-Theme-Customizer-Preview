@@ -88,7 +88,7 @@ do_action( 'customize_controls_print_scripts' );
 				submit_button( $save_text, 'primary save', 'save', false );
 			*/ ?>
 			<span class="spinner"></span>
-			<a style="margin-top: 10px;" class="button" href="/">
+			<a style="margin-top: 10px;" class="button" href="<?php echo home_url(); ?>">
 				<?php _e( 'Return' ); ?>
 			</a>
 		</div>
