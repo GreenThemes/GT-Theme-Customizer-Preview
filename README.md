@@ -28,3 +28,10 @@ Double and Triple, check the security.
 
 Note:
 I'm sure it won't work for you if you don't adjust the static links to the wp includes
+
+
+Feature Requests and saying thanks:
+
+Please donate any amount. As long as I see something, it will encourage me to spend my focus in that area.
+
+http://greenthe.me/donate/ 
