@@ -1,13 +1,13 @@
 <?php
 /*
 Plugin Name: GT Theme Customizer Preview for Guests
-Plugin URI: http://green.cx
-Description: Allows guests to preview theme options
-Version: 1.01
+Plugin URI: http://greenthe.me
+Description: Allows guests to preview theme options without logging in. <a href="http://greenthe.me/donate">Please consider a donation if you found this useful</a> (Any amount)
+Version: 1.2
 Author: Jason Green
-Author URI: http://green.cx/
-
-    Copyright 2013 Jason Green (http://green.cx)
+Author URI: http://Jason.Green.cx/
+License:
+    Copyright 2013 Jason Green (http://greenthe.me)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -24,27 +24,47 @@ Author URI: http://green.cx/
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
+
+/**
+ * This block handles the redirect, and possibly account creation
+ *
+ * Fires only when gtp-custom.php?gtlo 
+ *
+ */
 if (isset($_GET['gtlo'])) {
 	
 	//Needed for user functions
 		require(  dirname(__FILE__) . '/../../../wp-blog-header.php');
 	
-	//The name of the account we are going to make
-		$user_login = 'test';
-	
-	//Create the account and give them access to theme_options
-		wp_create_user( $user_login, 'SomeReallyLongForgettablePassworderp1234567654321', 'noreply@noreply.com' );
-		$gt_user= new WP_User( null, $user_login );
-		$gt_user->add_cap('edit_theme_options');
-	
-	//Now  Login as the new test user
-		$user = get_user_by('login', $user_login);
-		$user_id = $user->ID;
-		wp_set_current_user($user_id, $user_login);
-		wp_set_auth_cookie($user_id);
-		do_action('wp_login', $user_login);
-		wp_redirect(plugins_url('/includes/gt-customize.php' , __FILE__ ));
-		exit;
+			//The username of the "guest" or "test" account we are going to manage
+			$gt_user_login = 'Guest';
+
+
+	//If username already exists jump to the customizer  
+	 if ( username_exists( $gt_user_login ) ) {
+			 	//Now  Login as the new test user
+				$user = get_user_by('login', $gt_user_login);
+				$user_id = $user->ID;
+				wp_set_current_user($user_id, $gt_user_login);
+				wp_set_auth_cookie($user_id);
+				do_action('wp_login', $gt_user_login);
+				wp_redirect(plugins_url('/includes/gt-customize.php' , __FILE__ ));
+				exit; }
+	else {
+		// If there's no user, create the account and give them permission to theme_options
+			wp_create_user( $gt_user_login, 'SomeReallyLongForgettablePassworderp1234567654321', 'Guest@' . preg_replace('/^www\./','',$_SERVER['SERVER_NAME']) );
+			$gt_user= new WP_User( null, $gt_user_login );
+				//Let's create a new role for this type of user to manage permissions more adequately 
+				$result = add_role('theme_options_preview', 'Theme Options Preview', array(
+				    'read' => true, 
+				    'edit_posts' => false,
+				    'delete_posts' => false, // Use false to explicitly deny
+				    'edit_theme_options' => true, //This is the magic
+				));
+				
+						$gt_user->set_role('theme_options_preview'); // Assign that role to the new user
+
+	}
 }
 
 
@@ -54,7 +74,7 @@ if (isset($_GET['gtlo'])) {
  * Fires when ?wp_customize=on or on wp-admin/customize.php.
  *
  * @since 3.4.0
-  */
+ */
  
 
 
@@ -125,7 +145,7 @@ function gt_wp_customize_url( $stylesheet = null ) {
  */
 add_action ('admin_bar_menu', 'gt_customize_menu');
 function gt_customize_menu($admin_bar) {
-	
+
 	$admin_bar->add_menu( array (
 	'id' => 'customizer-preview',
 	'title' => 'Customizer Preview',
@@ -136,15 +156,30 @@ function gt_customize_menu($admin_bar) {
 	));
 }
 
+
 //IF the test user tries to view admin, take them back home
 function gt_restrict_admin_with_redirect() {
-	if (!current_user_can('manage_options') && ( is_ssl() ? 'https://' : 'http://' ) . $_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF'] != admin_url() . '/admin-ajax.php' && ( is_ssl() ? 'https://' : 'http://' ) . $_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF'] != admin_url() . '/admin.php' && ( is_ssl() ? 'https://' : 'http://' ) . $_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF'] != plugins_url() . '/gt-custom/includes/gt-customize.php' ) {
-			wp_redirect(site_url() ); exit;
+
+		function endswith($string, $test) {
+		    $strlen = strlen($string);
+		    $testlen = strlen($test);
+		    if ($testlen > $strlen) return false;
+		    return substr_compare($string, $test, -$testlen) === 0;
+		}
+
+	global $current_user;
+	
+ 	$user_roles = $current_user->roles;
+    $user_role = array_shift($user_roles);
+
+	if ($user_role == 'theme_options_preview' 
+		&& !endswith($_SERVER['PHP_SELF'], '/wp-admin/admin-ajax.php')
+		&& !endswith($_SERVER['PHP_SELF'], '/includes/gt-customize.php') ) {
+		wp_redirect(site_url() ); exit;		
 	}
 }
+
 add_action('admin_init', 'gt_restrict_admin_with_redirect');
-
-
 
 //Create Shortcode to drop the login and redirect link
 // Usage: [GTCustomizer]Preview Theme[/GTCustomizer]
@@ -153,3 +188,21 @@ function gt_autologin_link($atts, $content = null) {
 	return '<a class="button" href="'.$link.'"><span>' . do_shortcode($content) . '</span></a>';
 }
 add_shortcode('GTCustomizer' , 'gt_autologin_link');
+
+
+// Filter to remove the admin bar
+function gt_hide_admin_bar_css() {
+	echo '<style type="text/css">.show-admin-bar {display: none;} </style>';
+}
+function gt_remove_admin_bar() {
+	global $current_user;
+ 	$user_roles = $current_user->roles;
+    $user_role = array_shift($user_roles);
+    if ($user_role == 'theme_options_preview' ):
+		show_admin_bar(false);
+		add_action( 'admin_print_scripts-profile.php', 'gt_hide_admin_bar_css' );
+		//add_filter('show_admin_bar', '__return_false'); //Not sure of the difference...
+	endif;
+}
+
+add_action( 'init', 'gt_remove_admin_bar' , 9);
