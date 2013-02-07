@@ -125,6 +125,7 @@ do_action( 'customize_controls_print_scripts' );
 					$section->maybe_render();
 				?>
 			</ul></div>
+		     <span style="background: #f2f2f2;-moz-box-shadow: inset 5px 5px 5px #000;-webkit-box-shadow: 5px 5px 5px #000; box-shadow: inset 0 0 5px #ccc; border: 1px solid #fff; -moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px; color: #777; display: block; font-size: 12px; margin: 10px; padding: 10px;" id="gt-customizer-disclaimer">Customizer Preview by <a href="http://greenthe.me/">GreenThe.me</a></span>
 		</div>
 
 		<div id="customize-footer-actions" class="wp-full-overlay-footer">
