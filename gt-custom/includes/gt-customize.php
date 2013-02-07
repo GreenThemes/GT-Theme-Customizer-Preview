@@ -12,7 +12,7 @@ define( 'IFRAME_REQUEST', true );
 require_once( dirname(__FILE__) . '/../../../../wp-admin/admin.php' );
 
 //TODO: Move this to plugin activation or an interface to create a specific username	
-$gt_user= new WP_User( null, 'test' );
+$gt_user= new WP_User( null, 'Guest' );
 $gt_user->add_cap('edit_theme_options');
 
 
