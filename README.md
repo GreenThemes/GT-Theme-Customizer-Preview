@@ -32,3 +32,18 @@ Feature Requests and saying thanks:
 Please donate any amount. As long as I see something, it will encourage me to spend my focus in that area.
 
 http://greenthe.me/donate/ 
+
+
+** Changelog **
+1.03
+
+Removed injected styles to remove wpadmin bar fully via functions only
+Moved up admin redirect to a faster hook and is_admin check
+Added checking if a "Guest" account already exists on another site and adds the existing user to the current demo site automatically and assigns the roles as needed
+Made the "wp-blog-header.php" require crawl up a few directories looking for it first. Hopefully this will make it work across more different wordpress configurations.
+
+** TODO **
+/includes/gt-customizer.php still has a "hard" path set to the wp-admin. This is the same way the offical wordpress customizer works, but since we are in the plugin folder instead of in wp-admin already, we have to search for the admin.php 
+In otherwords, if your plugin's are in a strange location relative to wordpress, you'll need to edit that line at the top to suite your needs.
+
+
