@@ -12,15 +12,9 @@ define( 'IFRAME_REQUEST', true );
 require_once( dirname(__FILE__) . '/../../../../wp-admin/admin.php' );
 
 //TODO: Move this to plugin activation or an interface to create a specific username	
-$gt_user= new WP_User( null, 'Guest' );
-$gt_user->add_cap('edit_theme_options');
-
 
 if ( ! current_user_can( 'edit_theme_options' ) )
 	wp_die( __( 'Cheatin&#8217; uh?' ) );
-	
-// This removes the edit_theme_options permission
-//$user->remove_cap( 'edit_theme_options');  
 
 wp_reset_vars( array( 'url', 'return' ) );
 $url = urldecode( $url );
@@ -91,6 +85,7 @@ do_action( 'customize_controls_print_scripts' );
 			<a style="margin-top: 10px;" class="button" href="<?php echo home_url(); ?>">
 				<?php _e( 'Return' ); ?>
 			</a>
+            <span style=" text-transform: capitalize;float:right;"><?php echo 'Hello ' . $current_user->display_name; ?></span>
 		</div>
 
 		<?php
@@ -125,7 +120,7 @@ do_action( 'customize_controls_print_scripts' );
 					$section->maybe_render();
 				?>
 			</ul></div>
-		     <span style="background: #f2f2f2;-moz-box-shadow: inset 5px 5px 5px #000;-webkit-box-shadow: 5px 5px 5px #000; box-shadow: inset 0 0 5px #ccc; border: 1px solid #fff; -moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px; color: #777; display: block; font-size: 12px; margin: 10px; padding: 10px;" id="gt-customizer-disclaimer">Customizer Preview by <a href="http://greenthe.me/">GreenThe.me</a></span>
+			<span style="background: #f2f2f2;-moz-box-shadow: inset 5px 5px 5px #000;-webkit-box-shadow: 5px 5px 5px #000; box-shadow: inset 0 0 5px #ccc; border: 1px solid #fff; -moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px; color: #777; display: block; font-size: 12px; margin: 10px; padding: 10px; " gt-customizer"="">Customizer Preview by <a href="http://greenthe.me/">GreenThe.me</a></span>
 		</div>
 
 		<div id="customize-footer-actions" class="wp-full-overlay-footer">
@@ -193,7 +188,8 @@ do_action( 'customize_controls_print_scripts' );
 		'settings' => array(),
 		'controls' => array(),
 		'nonce'    => array(
- 			//'save'    => wp_create_nonce( 'save-customize_' . $wp_customize->get_stylesheet() ),
+ 			// Removing the orginal "Save" part of the customizer
+ 			// 'save'    => wp_create_nonce( 'save-customize_' . $wp_customize->get_stylesheet() ),
  			'preview' => wp_create_nonce( 'preview-customize_' . $wp_customize->get_stylesheet() )
  		),
 	);
