@@ -39,6 +39,8 @@ do_action( 'customize_controls_init' );
 wp_enqueue_script( 'customize-controls' );
 wp_enqueue_style( 'customize-controls' );
 
+wp_enqueue_script( 'accordion' );
+
 do_action( 'customize_controls_enqueue_scripts' );
 
 // Let's roll.
@@ -48,7 +50,7 @@ do_action( 'customize_controls_enqueue_scripts' );
 
 _wp_admin_html_begin();
 
-$body_class = 'wp-core-ui';
+$body_class = 'wp-core-ui js';
 
 if ( wp_is_mobile() ) :
 	$body_class .= ' mobile';
@@ -82,10 +84,10 @@ do_action( 'customize_controls_print_scripts' );
 				submit_button( $save_text, 'primary save', 'save', false );
 			*/ ?>
 			<span class="spinner"></span>
-			<a style="margin-top: 10px;" class="button" href="<?php echo home_url(); ?>">
-				<?php _e( 'Return' ); ?>
+			<a class="back button" href="<?php echo esc_url( $return ? $return : admin_url( 'themes.php' ) ); ?>">
+				<?php _e( 'Cancel' ); ?>
 			</a>
-            <span style=" text-transform: capitalize;float:right;"><?php echo 'Hello ' . $current_user->display_name; ?></span>
+			<span style=" text-transform: capitalize;float:right;"><?php echo 'Hello ' . $current_user->display_name; ?></span>
 		</div>
 
 		<?php
@@ -93,16 +95,16 @@ do_action( 'customize_controls_print_scripts' );
 			$cannot_expand = ! ( $screenshot || $wp_customize->theme()->get('Description') );
 		?>
 
-		<div class="wp-full-overlay-sidebar-content" tabindex="-1">
-			<div id="customize-info" class="customize-section<?php if ( $cannot_expand ) echo ' cannot-expand'; ?>">
-				<div class="customize-section-title" aria-label="<?php esc_attr_e( 'Theme Customizer Options' ); ?>" tabindex="0">
+		<div class="wp-full-overlay-sidebar-content accordion-container" tabindex="-1">
+			<div id="customize-info" class="accordion-section <?php if ( $cannot_expand ) echo ' cannot-expand'; ?>">
+				<div class="accordion-section-title" aria-label="<?php esc_attr_e( 'Theme Customizer Options' ); ?>" tabindex="0">
 					<span class="preview-notice"><?php
 						/* translators: %s is the theme name in the Customize/Live Preview pane */
 						echo sprintf( __( 'You are previewing %s' ), '<strong class="theme-name">' . $wp_customize->theme()->display('Name') . '</strong>' );
 					?></span>
 				</div>
 				<?php if ( ! $cannot_expand ) : ?>
-				<div class="customize-section-content">
+				<div class="accordion-section-content">
 					<?php if ( $screenshot ) : ?>
 						<img class="theme-screenshot" src="<?php echo esc_url( $screenshot ); ?>" />
 					<?php endif; ?>
@@ -119,8 +121,7 @@ do_action( 'customize_controls_print_scripts' );
 				foreach ( $wp_customize->sections() as $section )
 					$section->maybe_render();
 				?>
-			</ul></div>
-			<span style="background: #f2f2f2;-moz-box-shadow: inset 5px 5px 5px #000;-webkit-box-shadow: 5px 5px 5px #000; box-shadow: inset 0 0 5px #ccc; border: 1px solid #fff; -moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px; color: #777; display: block; font-size: 12px; margin: 10px; padding: 10px; " gt-customizer"="">Customizer Preview by <a href="http://greenthe.me/">GreenThe.me</a></span>
+			</ul></div><span style="background: #f2f2f2;-moz-box-shadow: inset 5px 5px 5px #000;-webkit-box-shadow: 5px 5px 5px #000; box-shadow: inset 0 0 5px #ccc; border: 1px solid #fff; -moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px; color: #777; display: block; font-size: 12px; margin: 10px; padding: 10px; " gt-customizer"="">Customizer Preview by <a href="http://greenthe.me/">GreenThe.me</a></span>
 		</div>
 
 		<div id="customize-footer-actions" class="wp-full-overlay-footer">
@@ -189,7 +190,7 @@ do_action( 'customize_controls_print_scripts' );
 		'controls' => array(),
 		'nonce'    => array(
  			// Removing the orginal "Save" part of the customizer
- 			// 'save'    => wp_create_nonce( 'save-customize_' . $wp_customize->get_stylesheet() ),
+ 		//  'save'    => wp_create_nonce( 'save-customize_' . $wp_customize->get_stylesheet() ),
  			'preview' => wp_create_nonce( 'preview-customize_' . $wp_customize->get_stylesheet() )
  		),
 	);
