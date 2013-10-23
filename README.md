@@ -35,6 +35,12 @@ http://greenthe.me/donate/
 
 
 ** Changelog **
+1.04
+
+Updated includes/gt-customizer.php with new Wordpress 3.6 core javascript libraries
+Now requires WP 3.6
+
+
 1.03
 
 Removed injected styles to remove wpadmin bar fully via functions only
