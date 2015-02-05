@@ -3,11 +3,11 @@
 Plugin Name: GT Theme Customizer Preview for Guests
 Plugin URI: http://greenthe.me
 Description: Allows guests to preview theme options
-Version: 1.04
+Version: 1.4.1
 Author: Jason Green
 Author URI: http://greenthe.me/
 
-    Copyright 2013 Jason Green (http://green.cx)
+    Copyright 2015 Jason Green (http://Green.cx http://GreenThe.me)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -23,9 +23,14 @@ Author URI: http://greenthe.me/
     along with this program; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 	
-	Changelog
-	
+	Changelog:
+	1.4.1 - Updated to for Wordpress 4.1
 	1.04 - Updated to match WP 3.6 core Accordian javascripts. 3.6 Now Required for this verison.
+	
+	Usage:
+	Use this short code to display link [GTCustomizer]Preview Theme[/GTCustomizer]
+	Logout, visit your website, and click on the link.
+	Live Preview here: http://leliel.greenthe.me/wp-content/plugins/gt-custom/gt-custom.php?gtlo
 */
 
 //This section executes outside of wordpress to create users, roles, login, etc.
