@@ -1,23 +1,26 @@
 GT-Theme-Customizer-Preview
 ===================
 
-** Working on Wordpress 3.8 as of 1/24/2014 **  
+** Working on Wordpress 4.1 as of 2/5/2015 **  
 
 The idea is for Guests to be able to "Try Out" customizing your wordpress theme's options without registering an account.
 
 Try it for yourself, live demo on http://GreenThe.me
 
-** This should be ready for production use. **
+** This should be ready for production use, on a demo site. **
 
 Usage:
-A test user is automatically created the first time you visit the customizer username="Guest"
 
-Then use the following Shortcode to create the Guest Login Link.
+Use the following Shortcode to create the Guest Login Link.
 
 [GTCustomizer]Click here to Preview this theme's Customizer[/GTCustomizer]
 
-Clicking on the link, log them in as the "Guest" user with access to a pseduo wordpress live customizer.
-The Dashboard, and WP_Nav bar are blocked to Guest Users. 
+Visit that page, and try out the link! (While not logged in, like a real guest or visitor would)
+
+How it works:
+A test user is automatically created the first time you visit the customizer (username="Guest")
+Clicking on the link, log them in as the "Guest" user with access to a "pseduo" wordpress live customizer.
+The Dashboard, and WP_Nav bar (wp-admin) are blocked to Guest Users. 
 A Menu Item is added to the admin bar so they can also use the customizer previewer.
 
 Future Features?
@@ -40,6 +43,9 @@ http://greenthe.me/donate/
 
 ** Changelog **
 
+1.4.1
+Updated the customizer to work with Wordpress 4.1
+Fixed the Customizer Preview Toolbar Link
 
 1.04
 
