@@ -155,7 +155,7 @@ function gt_customize_menu($admin_bar) {
 	$admin_bar->add_menu( array (
 	'id' => 'customizer-preview',
 	'title' => 'Customizer Preview',
-	'href' => plugins_url('/includes/gt-customize.php' , __FILE__ ),
+	'href' => plugins_url('/gt-custom.php?gtlo' , __FILE__ ),
 	'meta' => array(
 		'title' => __('Greenth.me Customizer Preview'),
 		),
