@@ -3,11 +3,11 @@
 Plugin Name: GT Theme Customizer Preview for Guests
 Plugin URI: http://greenthe.me
 Description: Allows guests to preview theme options
-Version: 1.4.1
+Version: 1.05
 Author: Jason Green
 Author URI: http://greenthe.me/
 
-    Copyright 2015 Jason Green (http://Green.cx http://GreenThe.me)
+    Copyright 2015 Jason Green (http://green.cx)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -22,32 +22,28 @@ Author URI: http://greenthe.me/
     You should have received a copy of the GNU General Public License
     along with this program; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-	
-	Changelog:
-	1.4.1 - Updated to for Wordpress 4.1
+
+	Changelog
+
+	1.05 - Updated for compability with WP 4.3.1
 	1.04 - Updated to match WP 3.6 core Accordian javascripts. 3.6 Now Required for this verison.
-	
-	Usage:
-	Use this short code to display link [GTCustomizer]Preview Theme[/GTCustomizer]
-	Logout, visit your website, and click on the link.
-	Live Preview here: http://leliel.greenthe.me/wp-content/plugins/gt-custom/gt-custom.php?gtlo
 */
 
 //This section executes outside of wordpress to create users, roles, login, etc.
 //This section requires no input.
 if (isset($_GET['gtlo'])) {
-    
+
 	//Climb dirs till we find wp-blog-header (Varies depending on wordpress install)
         while (! file_exists('wp-blog-header.php') )
-        chdir('..'); 
- 
+        chdir('..');
+
     //Needed for user functions
         require ("wp-blog-header.php");
-	
+
 	//The username of the "guest" or "test" account we are going to manage
 		$gt_user_login = 'Guest';
 
-	//If username already exists jump to the customizer  
+	//If username already exists jump to the customizer
 	 if ( username_exists( $gt_user_login ) ) {
 			 	//Now  Login as the new test user
 				$user = get_user_by('login', $gt_user_login);
@@ -67,9 +63,9 @@ if (isset($_GET['gtlo'])) {
 		// else create the account and give them permission to theme_options
 			wp_create_user( $gt_user_login, 'SomeReallyLongForgettablePassworderp1234567654321', 'Guest@' . preg_replace('/^www\./','',$_SERVER['SERVER_NAME']) );
 			$gt_user= new WP_User( null, $gt_user_login );
-				//Let's create a new role for this type of user to manage permissions more adequately 
+				//Let's create a new role for this type of user to manage permissions more adequately
 				$result = add_role('theme_options_preview', 'Theme Options Preview', array(
-				    'read' => true, 
+				    'read' => true,
 				    'edit_posts' => false,
 				    'delete_posts' => false, // Use false to explicitly deny
 				    'edit_theme_options' => true, //This is the magic
@@ -85,7 +81,7 @@ if (isset($_GET['gtlo'])) {
  *
  * @since 3.4.0
  */
- 
+
 function _gt_wp_customize_include() {
 	if ( ! ( ( isset( $_REQUEST['gt_customize'] ) && 'on' == $_REQUEST['wp_customize'] )
 		|| ( 'gt-customize.php' == basename( $_SERVER['PHP_SELF'] ) )
@@ -177,10 +173,10 @@ function gt_restrict_admin_with_redirect() {
     $user_role = array_shift($user_roles);
 
 	if( is_admin() &&
-        $user_role == 'theme_options_preview' 
+        $user_role == 'theme_options_preview'
 		&& !endswith($_SERVER['PHP_SELF'], '/wp-admin/admin-ajax.php')
 		&& !endswith($_SERVER['PHP_SELF'], '/includes/gt-customize.php') ) {
-		wp_redirect(site_url() ); exit;		
+		wp_redirect(site_url() ); exit;
 	}
 }
 add_action('init', 'gt_restrict_admin_with_redirect');
@@ -200,7 +196,7 @@ function gt_remove_admin_bar( $null, $user_id, $key )
     global $current_user;
     if ($current_user != null) {
      	$user_roles = $current_user->roles;
-        $user_role = array_shift($user_roles); 
+        $user_role = array_shift($user_roles);
     }
     if( 'show_admin_bar_front' != $key ) return null;
     if( $user_role == 'theme_options_preview' ) return 0;
