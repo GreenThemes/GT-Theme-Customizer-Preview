@@ -3,7 +3,7 @@
 Plugin Name: GT Theme Customizer Preview for Guests
 Plugin URI: http://greenthe.me
 Description: Allows guests to preview theme options
-Version: 1.05
+Version: 1.5
 Author: Jason Green
 Author URI: http://greenthe.me/
 
