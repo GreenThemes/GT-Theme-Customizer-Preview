@@ -1,7 +1,7 @@
 GT-Theme-Customizer-Preview
 ===================
 
-** Working on Wordpress 4.1 as of 2/5/2015 **  
+** Working on Wordpress 4.3.1 as of 12/4/2015 **  
 
 The idea is for Guests to be able to "Try Out" customizing your wordpress theme's options without registering an account.
 
@@ -42,6 +42,10 @@ http://greenthe.me/donate/
 
 
 ** Changelog **
+
+1.5
+Updated the customizer to work with Wordpress 4.3.1
+Checked that uploads,saving changes, and uploading anything is blocked. (No permission by Wordpress)
 
 1.4.1
 Updated the customizer to work with Wordpress 4.1
